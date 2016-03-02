@@ -1,11 +1,11 @@
-# slim functions that extend build/envsetup.sh
+# yoshi functions that extend build/envsetup.sh
 
-function slim_device_combos()
+function yoshi_device_combos()
 {
     local T list_file variant device
 
     T="$(gettop)"
-    list_file="${T}/vendor/slim/slim.devices"
+    list_file="${T}/vendor/yoshi/yoshi.devices"
     variant="userdebug"
 
     if [[ $1 ]]
@@ -27,45 +27,45 @@ function slim_device_combos()
     if [[ ! -f "${list_file}" ]]
     then
         echo "unable to find device list: ${list_file}"
-        list_file="${T}/vendor/slim/slim.devices"
+        list_file="${T}/vendor/yoshi/yoshi.devices"
         echo "defaulting device list file to: ${list_file}"
     fi
 
     while IFS= read -r device
     do
-        add_lunch_combo "slim_${device}-${variant}"
+        add_lunch_combo "yoshi_${device}-${variant}"
     done < "${list_file}"
 }
 
-function slim_rename_function()
+function yoshi_rename_function()
 {
-    eval "original_slim_$(declare -f ${1})"
+    eval "original_yoshi_$(declare -f ${1})"
 }
 
-function _slim_build_hmm() #hidden
+function _yoshi_build_hmm() #hidden
 {
     printf "%-8s %s" "${1}:" "${2}"
 }
 
-function slim_append_hmm()
+function yoshi_append_hmm()
 {
-    HMM_DESCRIPTIVE=("${HMM_DESCRIPTIVE[@]}" "$(_slim_build_hmm "$1" "$2")")
+    HMM_DESCRIPTIVE=("${HMM_DESCRIPTIVE[@]}" "$(_yoshi_build_hmm "$1" "$2")")
 }
 
-function slim_add_hmm_entry()
+function yoshi_add_hmm_entry()
 {
     for c in ${!HMM_DESCRIPTIVE[*]}
     do
         if [[ "${1}" == $(echo "${HMM_DESCRIPTIVE[$c]}" | cut -f1 -d":") ]]
         then
-            HMM_DESCRIPTIVE[${c}]="$(_slim_build_hmm "$1" "$2")"
+            HMM_DESCRIPTIVE[${c}]="$(_yoshi_build_hmm "$1" "$2")"
             return
         fi
     done
-    slim_append_hmm "$1" "$2"
+    yoshi_append_hmm "$1" "$2"
 }
 
-function slimremote()
+function yoshiremote()
 {
     local proj pfx project
 
@@ -74,7 +74,7 @@ function slimremote()
         echo "Not in a git directory. Please run this from an Android repository you wish to set up."
         return
     fi
-    git remote rm slim 2> /dev/null
+    git remote rm yoshi 2> /dev/null
 
     proj="$(pwd -P | sed "s#$ANDROID_BUILD_TOP/##g")"
 
@@ -84,8 +84,8 @@ function slimremote()
 
     project="${proj//\//_}"
 
-    git remote add slim "git@github.com:SlimRoms/$pfx$project"
-    echo "Remote 'slim' created"
+    git remote add yoshi "git@github.com:YoshiROM/$pfx$project"
+    echo "Remote 'yoshi' created"
 }
 
 function cmremote()
@@ -145,11 +145,11 @@ function cafremote()
     echo "Remote 'caf' created"
 }
 
-function slim_push()
+function yoshi_push()
 {
     local branch ssh_name path_opt proj
     branch="lp5.1"
-    ssh_name="slim_review"
+    ssh_name="yoshi_review"
     path_opt=
 
     if [[ "$1" ]]
@@ -167,25 +167,26 @@ function slim_push()
         proj="android_$proj"
     fi
 
-    git $path_opt push "ssh://${ssh_name}/SlimRoms/$proj" "HEAD:refs/for/$branch"
+    git $path_opt push "ssh://${ssh_name}/YoshiROM/$proj" "HEAD:refs/for/$branch"
 }
 
 
-slim_rename_function hmm
+yoshi_rename_function hmm
 function hmm() #hidden
 {
     local i T
     T="$(gettop)"
-    original_slim_hmm
+    original_yoshi_hmm
     echo
 
-    echo "vendor/slim extended functions. The complete list is:"
-    for i in $(grep -P '^function .*$' "$T/vendor/slim/build/envsetup.sh" | grep -v "#hidden" | sed 's/function \([a-z_]*\).*/\1/' | sort | uniq); do
+    echo "vendor/yoshi extended functions. The complete list is:"
+    for i in $(grep -P '^function .*$' "$T/vendor/yoshi/build/envsetup.sh" | grep -v "#hidden" | sed 's/function \([a-z_]*\).*/\1/' | sort | uniq); do
         echo "$i"
     done |column
 }
 
-slim_append_hmm "slimremote" "Add a git remote for matching SLIM repository"
-slim_append_hmm "cmremote" "Add a git remote for matching CM repository"
-slim_append_hmm "aospremote" "Add git remote for matching AOSP repository"
-slim_append_hmm "cafremote" "Add git remote for matching CodeAurora repository."
+yoshi_append_hmm "yoshiremote" "Add a git remote for matching YOSHI repository"
+yoshi_append_hmm "slimremote" "Add a git remote for matching SLIM repository"
+yoshi_append_hmm "cmremote" "Add a git remote for matching CM repository"
+yoshi_append_hmm "aospremote" "Add git remote for matching AOSP repository"
+yoshi_append_hmm "cafremote" "Add git remote for matching CodeAurora repository."
