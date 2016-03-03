@@ -62,6 +62,10 @@ PRODUCT_COPY_FILES += \
     vendor/yoshi/prebuilt/common/etc/init.d/90userinit:system/etc/init.d/90userinit \
     vendor/yoshi/prebuilt/common/bin/sysinit:system/bin/sysinit
 
+# Layers Manager
+PRODUCT_COPY_FILES += \
+    vendor/yoshi/prebuilt/common/etc/LayersManager.apk:system/app/LayersManager.apk
+
 # Embed SuperUser
 SUPERUSER_EMBEDDED := true
 
@@ -93,6 +97,7 @@ PRODUCT_PACKAGES += \
     SlimCenter \
     SlimLauncher \
     LatinIME \
+    LayersManager \
     BluetoothExt \
     DashClock
 
