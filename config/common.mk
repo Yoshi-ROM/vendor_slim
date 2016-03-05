@@ -24,6 +24,10 @@ PRODUCT_PROPERTY_OVERRIDES += \
 PRODUCT_PROPERTY_OVERRIDES += \
     dalvik.vm.debug.alloc=0
 
+# Enable superuser/root access for apps by default
+PRODUCT_PROPERTY_OVERRIDES += \
+    persist.sys.root_access=1
+
 # Backup Tool
 PRODUCT_COPY_FILES += \
     vendor/yoshi/prebuilt/common/bin/backuptool.sh:install/bin/backuptool.sh \
