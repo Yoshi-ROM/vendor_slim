@@ -70,6 +70,10 @@ PRODUCT_COPY_FILES += \
 PRODUCT_COPY_FILES += \
     vendor/yoshi/prebuilt/common/etc/LayersManager.apk:system/app/LayersManager.apk
 
+# Default Dark Theme
+PRODUCT_COPY_FILES += \
+    vendor/yoshi/prebuilt/common/etc/DefaultDarkTheme.apk:system/app/DefaultDarkTheme.apk
+
 # Embed SuperUser
 SUPERUSER_EMBEDDED := true
 
@@ -102,6 +106,7 @@ PRODUCT_PACKAGES += \
     SlimLauncher \
     LatinIME \
     LayersManager \
+    DefaultDarkTheme \
     BluetoothExt \
     DashClock
 
